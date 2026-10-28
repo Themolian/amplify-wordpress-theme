@@ -1,0 +1,99 @@
+{
+	"name": "amplify",
+	"version": "11.0.2",
+	"description": "Front-End starter kit for Studio 24",
+	"type": "module",
+	"main": "index.js",
+	"directories": {
+		"doc": "docs",
+		"test": "tests"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/studio24/amplify.git"
+	},
+	"author": "Studio 24",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/studio24/amplify/issues"
+	},
+	"homepage": "https://github.com/studio24/amplify#readme",
+	"browserslist": [
+		">0.1%",
+		"last 2 Chrome versions",
+		"last 2 Firefox versions",
+		"last 2 Edge versions",
+		"last 2 Samsung versions",
+		"Safari >= 15.6",
+		"iOS >= 15.6",
+		"not dead"
+	],
+	"config": {
+		"from": "assets-src",
+		"to": "web/dist",
+		"js": {
+			"_comment": "This section identifies the entry points for the JS build process and libraries to be copied over to the dist folder.",
+			"entries": {
+				"main": "main.js",
+				"country-autocomplete": "country-autocomplete.js",
+				"tabs": "package-extensions/s24-tabby-polyfills.js",
+				"splide": "package-extensions/s24-splide.js",
+				"sortable-table": "sortable-table.js"
+			},
+			"libraries": {
+				"fontfaceobserver/fontfaceobserver.js": "fontfaceobserver.js"
+			}
+		},
+		"css": {
+			"_comment": "This section identifies the entry points for the CSS build process allowing for greater customization and control over the number of CSS files generated.",
+			"entries": {
+				"core": "core.scss",
+				"advanced": "advanced.scss",
+				"print": "print.scss"
+			}
+		},
+		"isWordPress": true
+	},
+	"scripts": {
+		"fonts": "shx cp -r ${npm_package_config_from}/fonts/* ${npm_package_config_to}/fonts",
+		"images": "shx cp -r ${npm_package_config_from}/images/* ${npm_package_config_to}/images",
+		"svgs": "svgo --folder=${npm_package_config_from}/svg --output=${npm_package_config_to}/svg",
+		"lint-scss": "stylelint --fix \"${npm_package_config_from}/styles/sass/**/*.scss\"",
+		"prestyles": "npm run-script lint-scss",
+		"styles": "node build-styles.mjs && cross-env MINIFY=true node build-styles.mjs",
+		"js": "node build-js.mjs && cross-env MINIFY=true node build-js.mjs",
+		"prebuild": "shx rm -rf ${npm_package_config_to} && shx mkdir -p ${npm_package_config_to}/fonts && shx mkdir ${npm_package_config_to}/images && shx mkdir ${npm_package_config_to}/js && shx mkdir ${npm_package_config_to}/js/libraries && shx mkdir ${npm_package_config_to}/styles && shx mkdir ${npm_package_config_to}/svg",
+		"build": "npm-run-all --parallel fonts images svgs js styles",
+		"watch:fonts": "chokidar ${npm_package_config_from}/fonts -c \"npm run fonts\"",
+		"watch:images": "chokidar ${npm_package_config_from}/images -c \"npm run images\"",
+		"watch:svgs": "chokidar ${npm_package_config_from}/svg -c \"npm run svgs\"",
+		"watch:js": "chokidar ${npm_package_config_from}/js -c \"npm run js\"",
+		"watch:sass": "chokidar ${npm_package_config_from}/styles -c \"npm run lint-scss\"",
+		"watch:styles": "chokidar ${npm_package_config_from}/styles -c \"npm run styles\"",
+		"watch": "npm-run-all --parallel watch:*"
+	},
+	"devDependencies": {
+		"autoprefixer": "^10.5.4",
+		"browserslist": "^4.28.2",
+		"browserslist-to-esbuild": "^2.1.1",
+		"chokidar-cli": "^3.0.0",
+		"cross-env": "^10.1.0",
+		"npm-run-all": "^4.1.5",
+		"postcss": "^8.5.26",
+		"postcss-prefix-selector": "^2.1.1",
+		"sass": "^1.102.0",
+		"shx": "^0.4.0",
+		"stylelint": "^17.14.1",
+		"stylelint-config-standard": "^40.0.0",
+		"stylelint-config-standard-scss": "^17.0.0",
+		"stylelint-order": "^8.1.1",
+		"svgo": "^4.1.0",
+		"vite": "^7.3.6"
+	},
+	"dependencies": {
+		"@splidejs/splide": "^4.1.4",
+		"accessible-autocomplete": "^3.0.1",
+		"fontfaceobserver": "^2.3.0",
+		"tabbyjs": "^12.0.3"
+	}
+}
